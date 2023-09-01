@@ -1,3 +1,3 @@
-from app.clipher import Clipher
+from app.cipher import Cipher
 
-Clipher.run()
+Cipher.run()
