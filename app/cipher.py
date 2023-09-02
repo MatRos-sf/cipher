@@ -2,21 +2,22 @@ import time
 
 from menu.menu import Menu
 
+
 class Cipher:
     def __init__(self):
         self.menu = Menu()
         self._run = True
-        self.buffer = []
+        #self.buffer = []
 
     def run(self):
-
+        self.menu.load_buffers()
         while self._run:
             self.menu.show()
             response, task = self.response()
             if response:
                 if not task:
                     self._run = False
-                self.buffer.append(task)
+
 
     def response(self) -> tuple:
         try:

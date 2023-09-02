@@ -16,6 +16,10 @@ class FileHandler:
         self._name_file = name +'.json'
 
     def open(self):
+        if not self.name_file:
+            name_file = input("Please write name file to save\n>")
+            self.name_file = name_file
+
         try:
             file = open(os.path.join(self.path, self.name_file))
         except FileNotFoundError:
@@ -23,7 +27,7 @@ class FileHandler:
         else:
             self.content = json.load(file)
             file.close()
-            print(self.content)
+            return self.content
 
     def save(self, buffers):
         if not self.name_file:
@@ -32,4 +36,4 @@ class FileHandler:
 
         file = open(os.path.join(self.path, self.name_file), "w")
         json.dump(buffers, file)
-
+        file.close()
