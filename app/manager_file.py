@@ -3,7 +3,7 @@ import os
 
 class FileHandler:
     def __init__(self):
-        self.path: str = "../save_files"
+        self.path: str = "save_files"
         self._name_file: str = ""
         self.content= None
 
@@ -13,7 +13,7 @@ class FileHandler:
 
     @name_file.setter
     def name_file(self, name):
-        self._name_file = name
+        self._name_file = name +'.json'
 
     def open(self):
         try:
@@ -23,6 +23,13 @@ class FileHandler:
         else:
             self.content = json.load(file)
             file.close()
-            print(self.content['glossary'])
+            print(self.content)
 
+    def save(self, buffers):
+        if not self.name_file:
+            name_file = input("Please write name file to save\n>")
+            self.name_file = name_file
+
+        file = open(os.path.join(self.path, self.name_file), "w")
+        json.dump(buffers, file)
 
