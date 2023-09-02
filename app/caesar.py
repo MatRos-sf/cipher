@@ -33,13 +33,30 @@ class CaesarCipher:
         }
         return data
 
+    @property
+    def decrypt(self):
+        text_rot13_decrypt: str = ""
+        for letter in self.text:
+            if letter.isalpha():
+                new_letter = self.change_letter(letter.upper(), -13)
+                text_rot13_decrypt += new_letter
+            else:
+                text_rot13_decrypt += letter
+
+        data = {
+            "text": text_rot13_decrypt,
+            "rot_type": "rot13",
+            "status": "decrypted"
+        }
+        return data
+
     @staticmethod
     def change_letter(letter: str, num_rot: int) -> str:
 
         index = CaesarCipher.alpha_upper.index(letter)
         new_index = index + num_rot
 
-        if new_index < CaesarCipher.size_alpha:
+        if new_index > 0 and new_index < CaesarCipher.size_alpha:
             return CaesarCipher.alpha_upper[new_index]
 
         return CaesarCipher.alpha_upper[new_index % CaesarCipher.size_alpha]

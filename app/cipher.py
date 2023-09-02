@@ -18,7 +18,6 @@ class Cipher:
                     self._run = False
                 self.buffer.append(task)
 
-
     def response(self) -> tuple:
         try:
             user_response = int(input("> "))
