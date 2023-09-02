@@ -12,7 +12,6 @@ class Executor:
         self.buffers: List[Buffer] = []
         self.read_file = FileHandler()
 
-
     def encrypt(self):
         text_to_encrypt = input("Write text to encrypt\n>")
 
@@ -32,17 +31,31 @@ class Executor:
         self.buffers.append(Buffer(**decrypt_text))
 
         return decrypt_text
-    def exit(self):
-        self.buffer_save()
+
+    def check_changes(self) -> bool:
+        """Function checks changes in read file and buffer"""
+        if self.convert_buffers() == self.read_file.content:
+            return True
+        return False
+    def exit(self) -> None:
+        if not self.check_changes():
+            self.buffer_save()
         return
 
-    def buffer_save(self):
+    def buffer_save(self) -> None:
         response = input("Do you want save all actions? [yes/no]\n> ")
         if response.upper() == "YES":
             self.read_file.save(self.convert_buffers())
 
-    def convert_buffers(self):
+    def convert_buffers(self) -> List[Dict[str, str]]:
+        """ Function convert Buffer to dict """
         return [buffer.__dict__ for buffer in self.buffers]
+
+    def add_to_buffers(self, buffers: List[dict]):
+
+        for buffer in buffers:
+            self.buffers.append(Buffer(**buffer))
+
 
 class Menu:
 
@@ -71,3 +84,8 @@ class Menu:
     def show_error(self):
         print('Error')
 
+    def load_buffers(self) -> None:
+        response = input("Do you want load file?[yes/no]\n>  ")
+        if response.upper() == 'YES':
+            buffers = self.executor.read_file.open()
+            self.executor.add_to_buffers(buffers)
