@@ -6,7 +6,7 @@ class Cipher:
     def __init__(self):
         self.menu = Menu()
         self._run = True
-        self.buffor = []
+        self.buffer = []
 
     def run(self):
 
@@ -16,7 +16,7 @@ class Cipher:
             if response:
                 if not task:
                     self._run = False
-
+                self.buffer.append(task)
 
 
     def response(self) -> tuple:

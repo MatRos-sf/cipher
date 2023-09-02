@@ -1,21 +1,37 @@
+import json
+
+
 class CaesarCipher:
     alpha_upper = list('AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ')
     size_alpha = len(alpha_upper)
 
-    def __init__(self, text: str) -> None:
-        self.text = text.upper()
+    def __init__(self) -> None:
+        self._text: str = ""
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, new_text):
+        self._text = new_text
 
     @property
     def encrypt(self):
         text_rot13: str = ""
         for letter in self.text:
             if letter.isalpha():
-                new_letter = self.change_letter(letter, 13)
+                new_letter = self.change_letter(letter.upper(), 13)
                 text_rot13 += new_letter
             else:
                 text_rot13 += letter
 
-        return text_rot13
+        data = {
+            "text": text_rot13,
+            "rot_type": "rot13",
+            "status": "encrypted"
+        }
+        return data
 
     @staticmethod
     def change_letter(letter: str, num_rot: int) -> str:
