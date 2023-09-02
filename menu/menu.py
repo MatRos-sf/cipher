@@ -88,4 +88,5 @@ class Menu:
         response = input("Do you want load file?[yes/no]\n>  ")
         if response.upper() == 'YES':
             buffers = self.executor.read_file.open()
-            self.executor.add_to_buffers(buffers)
+            if buffers:
+                self.executor.add_to_buffers(buffers)
