@@ -7,10 +7,9 @@ class Cipher:
     def __init__(self):
         self.menu = Menu()
         self._run = True
-        #self.buffer = []
 
     def run(self):
-        self.menu.load_buffers()
+        # self.menu.load_buffers()
         while self._run:
             self.menu.show()
             response, task = self.response()

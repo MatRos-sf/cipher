@@ -1,23 +1,25 @@
+from typing import Optional
 import json
 import os
 
 class FileHandler:
+    DIR_PATH = "files"
+
     def __init__(self):
-        self.path: str = "save_files"
-        self._name_file: str = ""
-        self.content= None
+        self._name_file: Optional[str] = None
+        self.content = None
 
     @property
     def name_file(self):
         return self._name_file
 
     @name_file.setter
-    def name_file(self, name):
-        self._name_file = name +'.json'
+    def name_file(self, value: str):
+        self._name_file = f"{value}.json" if not value.endswith('.json') else value
 
     def open(self):
         if not self.name_file:
-            name_file = input("Please write name file to save\n>")
+            name_file = input("Please, write the name file\n>")
             self.name_file = name_file
 
         try:
