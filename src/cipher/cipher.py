@@ -1,5 +1,3 @@
-import time
-
 from menu.menu import Menu
 
 
@@ -16,7 +14,6 @@ class Cipher:
             if response:
                 if not task:
                     self._run = False
-
 
     def response(self) -> tuple:
         try:

@@ -6,16 +6,26 @@ from manager import FileHandler
 
 class Executor:
     def __init__(self):
-        self.caesar = CaesarCipher()
+        self.caesar = CaesarCipher([13, 47])
         self.buffer = Buffer()
-        # self.buffers: List[Buffer] = []
         self.file_handler = FileHandler()
 
     def encrypt(self):
         text_to_encrypt = input("Write text to encrypt\n>")
+        print("Which type do you want to use?")
+        print(*self.caesar.rot_type, sep='\n')
 
-        self.caesar.text = text_to_encrypt
-        encrypt_text = self.caesar.encrypt
+        try:
+            chose_type = int(input("> "))
+        except TypeError:
+            print("I'm sorry this type is unavailable.")
+            return
+
+        if chose_type not in self.caesar.rot_type or chose_type < 0:
+            print("I'm sorry this type is unavailable.")
+            return
+
+        encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, chose_type, 'encrypted')
 
         self.buffer.add(Text(**encrypt_text))
 
