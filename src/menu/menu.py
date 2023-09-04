@@ -33,13 +33,24 @@ class Executor:
 
     def decrypt(self):
         text_to_encrypt = input("Write text to decrypt\n>")
+        print("Which type do you want to use? ")
+        print(*self.caesar.rot_type, sep='\n')
 
-        self.caesar.text = text_to_encrypt
-        decrypt_text = self.caesar.decrypt
+        try:
+            chose_type = int(input("> "))
+        except TypeError:
+            print("I'm sorry this type is unavailable.\n\n")
+            return
 
-        self.buffer.add(Text(**decrypt_text))
+        if chose_type not in self.caesar.rot_type or chose_type < 0:
+            print("I'm sorry this type is unavailable.\n\n")
+            return
 
-        return decrypt_text
+        encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, -chose_type, 'decrypted')
+
+        self.buffer.add(Text(**encrypt_text))
+
+        return encrypt_text
 
     def check_changes(self) -> bool:
         """Function checks changes in read file and buffer"""

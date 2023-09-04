@@ -71,7 +71,7 @@ class CaesarCipher:
 
         data = {
             "text": new_text,
-            "rot_type": "rot" + str(rot_type),
+            "rot_type": "rot" + str(-rot_type) if status == 'decrypted' else str(rot_type),
             "status": status
         }
         return data
