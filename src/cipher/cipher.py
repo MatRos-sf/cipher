@@ -12,7 +12,7 @@ class Cipher:
             self.menu.show()
             response, task = self.response()
             if response:
-                if not task:
+                if not task and self.menu.is_exit(response):
                     self._run = False
 
     def response(self) -> tuple:

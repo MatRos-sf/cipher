@@ -12,17 +12,17 @@ class Executor:
 
     def encrypt(self):
         text_to_encrypt = input("Write text to encrypt\n>")
-        print("Which type do you want to use?")
+        print("Which type do you want to use? ")
         print(*self.caesar.rot_type, sep='\n')
 
         try:
             chose_type = int(input("> "))
         except TypeError:
-            print("I'm sorry this type is unavailable.")
+            print("I'm sorry this type is unavailable.\n\n")
             return
 
         if chose_type not in self.caesar.rot_type or chose_type < 0:
-            print("I'm sorry this type is unavailable.")
+            print("I'm sorry this type is unavailable.\n\n")
             return
 
         encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, chose_type, 'encrypted')
@@ -76,6 +76,9 @@ class Menu:
 
     def __show_error(self):
         print('Error')
+
+    def is_exit(self, key: int):
+        return self.options.get(key)[0] == 'Exit'
 
     # def load_buffers(self) -> None:
     #     response = input("Do you want load file?[yes/no]\n>  ")
