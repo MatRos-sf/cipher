@@ -1,4 +1,5 @@
 from functools import partial
+from typing import Dict, Tuple
 
 from ceaser import CaesarCipher
 from buffer import Buffer, Text
@@ -70,7 +71,7 @@ class Executor:
 class Menu:
     def __init__(self) -> None:
         self.executor = Executor()
-        self.options = {
+        self.options: Dict[int, Tuple[str, partial]] = {
             1: ("Encryption", partial(self.executor.encrypt)),
             2: ("Decryption", partial(self.executor.decrypt)),
             3: ("Exit", partial(self.executor.exit))
@@ -81,15 +82,21 @@ class Menu:
         menu = [f"{key}: {value[0]}" for key, value in self.options.items()]
         print(*menu, sep='\n')
 
-    def execute(self, choice: int) -> None:
-        self.options.get(choice, self.__show_error)
-        print()
+    def execute(self, choice: int):
+        exe = self.options.get(choice)
+        if not exe:
+            self.__show_error()
+            return
+        return exe[1]()
 
-    def __show_error(self):
-        print('Error')
+    def __show_error(self) -> None:
+        """ Function informs user about wrong choice."""
+        print("This option doesn't exist.\n")
+        return
 
     def is_exit(self, key: int):
-        return self.options.get(key)[0] == 'Exit'
+        check_exit = self.options.get(key, None)
+        return check_exit and check_exit[0] == 'Exit'
 
     # def load_buffers(self) -> None:
     #     response = input("Do you want load file?[yes/no]\n>  ")
@@ -97,3 +104,5 @@ class Menu:
     #         buffers = self.executor.read_file.open()
     #         if buffers:
     #             self.executor.add_to_buffers(buffers)
+
+
