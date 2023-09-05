@@ -15,9 +15,14 @@ class CaesarCipher:
     def rot_types(self):
         return self._rot_types
 
+    @rot_types.setter
+    def rot_types(self, value: int) -> None:
+        if value not in self.rot_types:
+            self._rot_types.append(value)
+
     @staticmethod
     def change_letter(letter: str, num_rot: int, is_digit: bool = False) -> str:
-
+        """The method change letter according to Caesar cipher rule."""
         index = ALPHA_UPPER.index(letter.upper()) if not is_digit else DIGITS.index(letter)
         new_index = index + num_rot
 
@@ -35,7 +40,7 @@ class CaesarCipher:
         return new_letter if letter.isupper() else new_letter.lower()
 
     def code_encoder_decoder(self, text: str, rot_type: int, status: str) -> dict:
-
+        """The method encode/ decode some text."""
         new_text: str = ""
         for letter in text:
             if letter.isdigit():
