@@ -18,7 +18,7 @@ class Executor:
 
         try:
             chose_type = int(input("> "))
-        except TypeError:
+        except ValueError:
             print("I'm sorry this type is unavailable.\n\n")
             return
 
@@ -39,12 +39,12 @@ class Executor:
 
         try:
             chose_type = int(input("> "))
-        except TypeError:
-            print("I'm sorry this type is unavailable.\n\n")
+        except ValueError:
+            print("I'm sorry this type is unavailable.\n")
             return
 
         if chose_type not in self.caesar.rot_types or chose_type < 0:
-            print("I'm sorry this type is unavailable.\n\n")
+            print("I'm sorry this type is unavailable.\n")
             return
 
         encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, -chose_type, 'decrypted')
@@ -59,13 +59,8 @@ class Executor:
 
     def exit(self) -> None:
         if not self.check_changes():
-            self.buffer_save()
+            pass
         return
-
-    def buffer_save(self) -> None:
-        response = input("Do you want save all actions? [yes/no]\n> ")
-        if response.upper() == "YES":
-            self.read_file.save(self.buffer.convert_to_arr_of_dicts())
 
     def load_file(self):
         name_file = input("Please, enter the file name:\n> ")
