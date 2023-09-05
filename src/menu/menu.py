@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Union
 
 from ceaser import CaesarCipher
 from buffer import Buffer, Text
@@ -11,10 +11,10 @@ class Executor:
         self.buffer = Buffer()
         self.file_handler = FileHandler()
 
-    def encrypt(self):
+    def encrypt(self) -> Dict[str, str] | None:
         text_to_encrypt = input("Write text to encrypt\n>")
         print("Which type do you want to use? ")
-        print(*self.caesar.rot_type, sep='\n')
+        print(*self.caesar.rot_types, sep='\n')
 
         try:
             chose_type = int(input("> "))
@@ -22,7 +22,7 @@ class Executor:
             print("I'm sorry this type is unavailable.\n\n")
             return
 
-        if chose_type not in self.caesar.rot_type or chose_type < 0:
+        if chose_type not in self.caesar.rot_types or chose_type < 0:
             print("I'm sorry this type is unavailable.\n\n")
             return
 
@@ -32,10 +32,10 @@ class Executor:
 
         return encrypt_text
 
-    def decrypt(self):
+    def decrypt(self) -> Dict[str, str] | None:
         text_to_encrypt = input("Write text to decrypt\n>")
         print("Which type do you want to use? ")
-        print(*self.caesar.rot_type, sep='\n')
+        print(*self.caesar.rot_types, sep='\n')
 
         try:
             chose_type = int(input("> "))
@@ -43,7 +43,7 @@ class Executor:
             print("I'm sorry this type is unavailable.\n\n")
             return
 
-        if chose_type not in self.caesar.rot_type or chose_type < 0:
+        if chose_type not in self.caesar.rot_types or chose_type < 0:
             print("I'm sorry this type is unavailable.\n\n")
             return
 

@@ -1,6 +1,10 @@
-import json
 import string
 from typing import List
+
+ALPHA_UPPER = list(string.ascii_uppercase)
+DIGITS = list(string.digits)
+LEN_DIGITS = len(DIGITS)
+LEN_ALPHA = len(ALPHA_UPPER)
 
 
 class CaesarCipher:
@@ -11,67 +15,45 @@ class CaesarCipher:
         self._rot_types = rot_types
 
     @property
-    def rot_type(self):
+    def rot_types(self):
         return self._rot_types
 
-
-    def encrypt(self, text):
-        text_rot13: str = ""
-        for letter in text:
-            if letter.isalpha():
-                new_letter = self.change_letter(letter.upper(), 13)
-                text_rot13 += new_letter
-            else:
-                text_rot13 += letter
-
-        data = {
-            "text": text_rot13,
-            "rot_type": "rot13",
-            "status": "encrypted"
-        }
-        return data
-
-    @property
-    def decrypt(self):
-        text_rot13_decrypt: str = ""
-        for letter in self.text:
-            if letter.isalpha():
-                new_letter = self.change_letter(letter.upper(), -13)
-                text_rot13_decrypt += new_letter
-            else:
-                text_rot13_decrypt += letter
-
-        data = {
-            "text": text_rot13_decrypt,
-            "rot_type": "rot13",
-            "status": "decrypted"
-        }
-        return data
-
     @staticmethod
-    def change_letter(letter: str, num_rot: int) -> str:
+    def change_letter(letter: str, num_rot: int, is_digit: bool = False) -> str:
 
-        index = CaesarCipher.alpha_upper.index(letter)
+        index = ALPHA_UPPER.index(letter.upper()) if not is_digit else DIGITS.index(letter)
         new_index = index + num_rot
 
-        if new_index > 0 and new_index < CaesarCipher.size_alpha:
-            return CaesarCipher.alpha_upper[new_index]
+        if not is_digit and new_index > 0 and new_index < LEN_ALPHA:
+            new_letter = ALPHA_UPPER[new_index]
+            return new_letter if letter.isupper() else new_letter.lower()
 
-        return CaesarCipher.alpha_upper[new_index % CaesarCipher.size_alpha]
+        elif is_digit and new_index > 0 and new_index < LEN_DIGITS:
+            return DIGITS[new_index]
+
+        elif is_digit:
+            return DIGITS[new_index % LEN_DIGITS ]
+
+        new_letter = ALPHA_UPPER[new_index % LEN_ALPHA]
+        return new_letter if letter.isupper() else new_letter.lower()
+
 
     def code_encoder_decoder(self, text: str, rot_type: int, status: str) -> dict:
 
         new_text: str = ""
         for letter in text:
-            if letter.isalpha():
-                new_letter = self.change_letter(letter.upper(), rot_type)
+            if letter.isdigit():
+                new_letter = self.change_letter(letter, rot_type, True)
+                new_text += new_letter
+            elif letter.isalpha():
+                new_letter = self.change_letter(letter, rot_type)
                 new_text += new_letter
             else:
                 new_text += letter
 
         data = {
             "text": new_text,
-            "rot_type": "rot" + str(-rot_type) if status == 'decrypted' else str(rot_type),
+            "rot_type": "rot" + (str(-rot_type) if status == 'decrypted' else str(rot_type)),
             "status": status
         }
         return data

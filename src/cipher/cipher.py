@@ -19,7 +19,8 @@ class Cipher:
                     self._run = False
 
     def response(self) -> Union[Tuple[None, None], Tuple[int, None], Tuple[int, dict]]:
-        """The method that waits for user input and check its.There are three ways to return this function :
+        """
+        The method that waits for user input and check its.There are three ways to return this function :
             [None, None] If the user selects the wrong type in the menu
             [int, None] If the user selects correct type but something was wrong e.x. this option doesn't exist
             [int, dict] If everything is ok
