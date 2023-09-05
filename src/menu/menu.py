@@ -74,6 +74,19 @@ class Executor:
         content = self.file_handler.open()
         self.buffer.add_list_of_dict(content)
 
+    def save_to_file(self):
+
+        if not self.file_handler.name_file:
+            name_file = input("Please, enter the name of the file\n> ")
+            self.file_handler.name_file = name_file
+        else:
+            name_file = input(f"Do you want to append content to: {self.file_handler.name_file}?[yes/no]\n> ")
+            if name_file.upper() == "NO":
+                name_file = input("Please, enter the name of the file\n> ")
+                self.file_handler.name_file = name_file
+
+        self.file_handler.save(self.buffer.convert_to_arr_of_dicts())
+        print("Saved. \n")
 
 class Menu:
     def __init__(self) -> None:
@@ -82,7 +95,8 @@ class Menu:
             1: ("Encryption", partial(self.executor.encrypt)),
             2: ("Decryption", partial(self.executor.decrypt)),
             3: ("Load file", partial(self.executor.load_file)),
-            4: ("Exit", partial(self.executor.exit))
+            4: ("Save", partial(self.executor.save_to_file)),
+            5: ("Exit", partial(self.executor.exit))
         }
 
     def show(self) -> None:
@@ -105,12 +119,4 @@ class Menu:
     def is_exit(self, key: int):
         check_exit = self.options.get(key, None)
         return check_exit and check_exit[0] == 'Exit'
-
-    # def load_buffers(self) -> None:
-    #     response = input("Do you want load file?[yes/no]\n>  ")
-    #     if response.upper() == 'YES':
-    #         buffers = self.executor.read_file.open()
-    #         if buffers:
-    #             self.executor.add_to_buffers(buffers)
-
 

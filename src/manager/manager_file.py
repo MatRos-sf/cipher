@@ -1,6 +1,7 @@
-from typing import Optional
+from typing import Optional, List, Dict
 import json
 import os
+
 
 class FileHandler:
     DIR_PATH = "files"
@@ -15,7 +16,8 @@ class FileHandler:
 
     @name_file.setter
     def name_file(self, value: str):
-        self._name_file = f"{value}.json" if not value.endswith('.json') else value
+        if value.rstrip():
+            self._name_file = f"{value}.json" if not value.endswith('.json') else value
 
     def open(self):
         if not self.name_file:
@@ -31,11 +33,12 @@ class FileHandler:
             file.close()
             return self.content
 
-    def save(self, buffers):
+    def save(self, buffer: List[Dict[str, str]]):
+
         if not self.name_file:
             name_file = input("Please write name file to save\n>")
             self.name_file = name_file
 
-        file = open(os.path.join(self.path, self.name_file), "w")
-        json.dump(buffers, file)
-        file.close()
+        with open(os.path.join(self.DIR_PATH, self.name_file), "w") as file:
+            json.dump(buffer, file, indent=4)
+
