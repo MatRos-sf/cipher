@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Dict, Tuple, Union
+from typing import Dict, Tuple
 
 from ceaser import CaesarCipher
 from buffer import Buffer, Text
