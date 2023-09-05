@@ -23,7 +23,7 @@ class FileHandler:
             self.name_file = name_file
 
         try:
-            file = open(os.path.join(self.path, self.name_file))
+            file = open(os.path.join(FileHandler.DIR_PATH, self.name_file))
         except FileNotFoundError:
             print("File doesn't exist!")
         else:

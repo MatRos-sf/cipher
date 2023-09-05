@@ -67,6 +67,13 @@ class Executor:
         if response.upper() == "YES":
             self.read_file.save(self.buffer.convert_to_arr_of_dicts())
 
+    def load_file(self):
+        name_file = input("Please, enter the file name:\n> ")
+        self.file_handler.name_file = name_file
+
+        content = self.file_handler.open()
+        self.buffer.add_list_of_dict(content)
+
 
 class Menu:
     def __init__(self) -> None:
@@ -74,7 +81,8 @@ class Menu:
         self.options: Dict[int, Tuple[str, partial]] = {
             1: ("Encryption", partial(self.executor.encrypt)),
             2: ("Decryption", partial(self.executor.decrypt)),
-            3: ("Exit", partial(self.executor.exit))
+            3: ("Load file", partial(self.executor.load_file)),
+            4: ("Exit", partial(self.executor.exit))
         }
 
     def show(self) -> None:
