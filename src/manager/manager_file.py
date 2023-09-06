@@ -1,4 +1,4 @@
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 import json
 import os
 
@@ -19,10 +19,19 @@ class FileHandler:
         if value.rstrip():
             self._name_file = f"{value}.json" if not value.endswith('.json') else value
 
-    def open(self):
+    def is_name_file_exist(self) -> bool:
         if not self.name_file:
-            name_file = input("Please, write the name file\n>")
+            name_file = input("Please, enter the name file\n>")
             self.name_file = name_file
+            if not self.name_file:
+                print("The name file can't be empty.")
+                return False
+        return True
+
+    def open(self) -> Union[List[Dict[str,str]], None]:
+
+        if not self.is_name_file_exist():
+            return
 
         try:
             file = open(os.path.join(FileHandler.DIR_PATH, self.name_file))
@@ -33,12 +42,19 @@ class FileHandler:
             file.close()
             return self.content
 
-    def save(self, buffer: List[Dict[str, str]]):
+    def save(self, buffer: List[Dict[str, str]]) -> None:
+
+        if not self.is_name_file_exist():
+            return
 
         if not self.name_file:
             name_file = input("Please write name file to save\n>")
-            self.name_file = name_file
+            try:
+                self.name_file = name_file
+            except NameError:
+                print("The name can't be empty.")
+                return
 
         with open(os.path.join(self.DIR_PATH, self.name_file), "w") as file:
             json.dump(buffer, file, indent=4)
-
+        print("Saved. \n")

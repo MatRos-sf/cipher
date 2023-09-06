@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 from ceaser import CaesarCipher
 from buffer import Buffer, Text
@@ -12,44 +12,48 @@ class Executor:
         self.file_handler = FileHandler()
 
     def encrypt(self) -> Dict[str, str] | None:
-        text_to_encrypt = input("Write text to encrypt\n>")
+        text_to_encrypt = input("Write text to encrypt\n> ")
         print("Which type do you want to use? ")
         print(*self.caesar.rot_types, sep='\n')
 
         try:
             chose_type = int(input("> "))
         except ValueError:
-            print("I'm sorry this type is unavailable.\n\n")
+            print("I'm sorry this type is unavailable.\n")
             return
 
         if chose_type not in self.caesar.rot_types or chose_type < 0:
-            print("I'm sorry this type is unavailable.\n\n")
+            print("I'm sorry this type is unavailable.\n")
             return
 
         encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, chose_type, 'encrypted')
 
-        self.buffer.add(Text(**encrypt_text))
+        text = Text(**encrypt_text)
+        self.buffer.add(text)
+        print(text, '\n')
 
         return encrypt_text
 
     def decrypt(self) -> Dict[str, str] | None:
-        text_to_encrypt = input("Write text to decrypt\n>")
+        text_to_encrypt = input("Write text to decrypt\n> ")
         print("Which type do you want to use? ")
         print(*self.caesar.rot_types, sep='\n')
 
         try:
             chose_type = int(input("> "))
         except ValueError:
-            print("I'm sorry this type is unavailable.\n")
+            print("I'm sorry this type is unavailable.")
             return
 
         if chose_type not in self.caesar.rot_types or chose_type < 0:
-            print("I'm sorry this type is unavailable.\n")
+            print("I'm sorry this type is unavailable.")
             return
 
         encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, -chose_type, 'decrypted')
 
-        self.buffer.add(Text(**encrypt_text))
+        text = Text(**encrypt_text)
+        self.buffer.add(text)
+        print(text, '\n')
 
         return encrypt_text
 
@@ -62,12 +66,15 @@ class Executor:
             pass
         return
 
-    def load_file(self):
+    def load_file(self) -> None:
         name_file = input("Please, enter the file name:\n> ")
         self.file_handler.name_file = name_file
 
-        content = self.file_handler.open()
+        content: List[Dict[str, str]] = self.file_handler.open()
         self.buffer.add_list_of_dict(content)
+
+        if content:
+            print("Loaded:", *content, sep='\n')
 
     def save_to_file(self):
 
@@ -81,9 +88,11 @@ class Executor:
                 self.file_handler.name_file = name_file
 
         self.file_handler.save(self.buffer.convert_to_arr_of_dicts())
-        print("Saved. \n")
 
     def print_buffer(self) -> None:
+        if not self.buffer.data:
+            print("History is empty!")
+            return
         self.buffer.print_buffer()
 
 
@@ -101,6 +110,7 @@ class Menu:
 
     def show(self) -> None:
         menu = [f"{key}: {value[0]}" for key, value in self.options.items()]
+        print("\nMenu: ")
         print(*menu, sep='\n')
 
     def execute(self, choice: int):
