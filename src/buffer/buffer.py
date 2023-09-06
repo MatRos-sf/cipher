@@ -17,7 +17,9 @@ class Buffer:
         return [text.__dict__ for text in self.data]
 
     def print_buffer(self) -> None:
+        print(f"{'idx':<4}| {'text':<100}| {'rot_type':<10}| {'status':<15}")
+
         for idx, text in enumerate(self.data, start=1):
-            print(idx, text, sep=': ')
+            print(f"{idx:<4}  {text.text:<100}  {text.rot_type:<10}  {text.status:<15}")
         print()
 

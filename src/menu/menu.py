@@ -83,6 +83,10 @@ class Executor:
         self.file_handler.save(self.buffer.convert_to_arr_of_dicts())
         print("Saved. \n")
 
+    def print_buffer(self) -> None:
+        self.buffer.print_buffer()
+
+
 class Menu:
     def __init__(self) -> None:
         self.executor = Executor()
@@ -91,11 +95,11 @@ class Menu:
             2: ("Decryption", partial(self.executor.decrypt)),
             3: ("Load file", partial(self.executor.load_file)),
             4: ("Save", partial(self.executor.save_to_file)),
-            5: ("Exit", partial(self.executor.exit))
+            5: ("History", partial(self.executor.print_buffer)),
+            6: ("Exit", partial(self.executor.exit))
         }
 
     def show(self) -> None:
-        self.executor.buffer.print_buffer()
         menu = [f"{key}: {value[0]}" for key, value in self.options.items()]
         print(*menu, sep='\n')
 
