@@ -37,6 +37,7 @@ class FileHandler:
             file = open(os.path.join(FileHandler.DIR_PATH, self.name_file))
         except FileNotFoundError:
             print("File doesn't exist!")
+            return
         else:
             self.content = json.load(file)
             file.close()

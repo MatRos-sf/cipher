@@ -73,9 +73,9 @@ class Executor:
         self.file_handler.name_file = name_file
 
         content: List[Dict[str, str]] = self.file_handler.open()
-        self.buffer.add_list_of_dict(content)
 
         if content:
+            self.buffer.add_list_of_dict(content)
             print("Loaded:", *content, sep='\n')
 
     def save_to_file(self) -> None:
