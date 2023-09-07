@@ -28,7 +28,7 @@ class FileHandler:
                 return False
         return True
 
-    def open(self) -> Union[List[Dict[str,str]], None]:
+    def open(self) -> Union[List[Dict[str, str]], None]:
 
         if not self.is_name_file_exist():
             return

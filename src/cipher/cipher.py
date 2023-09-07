@@ -10,13 +10,14 @@ class Cipher:
 
     def run(self) -> None:
         """Main method who run whole app."""
-        # self.menu.load_buffers()
+        print("Welcome to the Caesar cipher app's.")
         while self._run:
             self.menu.show()
             response, result = self.response()
             if response:
                 if not result and self.menu.is_exit(response):
                     self._run = False
+                    print('See you soon.')
 
     def response(self) -> Union[Tuple[None, None], Tuple[int, None], Tuple[int, dict]]:
         """

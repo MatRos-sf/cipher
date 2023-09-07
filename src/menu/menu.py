@@ -1,12 +1,13 @@
 from functools import partial
 from typing import Dict, Tuple, List
+import pyperclip
 
 from ceaser import CaesarCipher
 from buffer import Buffer, Text
 from manager import FileHandler
 
 class Executor:
-    def __init__(self):
+    def __init__(self) -> None:
         self.caesar = CaesarCipher([13, 47])
         self.buffer = Buffer()
         self.file_handler = FileHandler()
@@ -30,7 +31,8 @@ class Executor:
 
         text = Text(**encrypt_text)
         self.buffer.add(text)
-        print(text, '\n')
+        print(text, "Text is in the clipboard.", sep="\n")
+        pyperclip.copy(text.text)
 
         return encrypt_text
 
@@ -76,7 +78,7 @@ class Executor:
         if content:
             print("Loaded:", *content, sep='\n')
 
-    def save_to_file(self):
+    def save_to_file(self) -> None:
 
         if not self.file_handler.name_file:
             name_file = input("Please, enter the name of the file\n> ")
@@ -125,7 +127,7 @@ class Menu:
         print("This option doesn't exist.\n")
         return
 
-    def is_exit(self, key: int):
+    def is_exit(self, key: int) -> bool:
         check_exit = self.options.get(key, None)
         return check_exit and check_exit[0] == 'Exit'
 
