@@ -4,11 +4,11 @@ import os
 
 
 class FileHandler:
-    DIR_PATH = "files"
+    DIR_PATH: str = "files"
 
     def __init__(self):
         self._name_file: Optional[str] = None
-        self.content = None
+        self.content: Optional[Dict[str, str]] = None
 
     @property
     def name_file(self):
@@ -16,45 +16,41 @@ class FileHandler:
 
     @name_file.setter
     def name_file(self, value: str):
-        if value.rstrip():
+        value = value.rstrip()
+        if value:
             self._name_file = f"{value}.json" if not value.endswith('.json') else value
 
-    def is_name_file_exist(self) -> bool:
-        if not self.name_file:
-            name_file = input("Please, enter the name file\n>")
+    def get_file_name_from_user(self) -> None:
+
+        while not self.name_file:
+            name_file = input("Type the file name and press enter.\n>")
             self.name_file = name_file
-            if not self.name_file:
-                print("The name file can't be empty.")
-                return False
-        return True
+
+            if not name_file:
+                print("The file name can't be empty!")
 
     def open(self) -> Union[List[Dict[str, str]], None]:
-
-        if not self.is_name_file_exist():
-            return
+        """
+        The function opens file. Return:
+            None - the file doesn't exist
+            List of dicts
+        """
+        if not self.name_file:
+            self.get_file_name_from_user()
 
         try:
-            file = open(os.path.join(FileHandler.DIR_PATH, self.name_file))
+            with open(os.path.join(FileHandler.DIR_PATH, self.name_file)) as file:
+                self.content = json.load(file)
         except FileNotFoundError:
             print("File doesn't exist!")
             return
-        else:
-            self.content = json.load(file)
-            file.close()
-            return self.content
 
     def save(self, buffer: List[Dict[str, str]]) -> None:
-
-        if not self.is_name_file_exist():
-            return
-
+        """
+        The function save buffer to the file.
+        """
         if not self.name_file:
-            name_file = input("Please write name file to save\n>")
-            try:
-                self.name_file = name_file
-            except NameError:
-                print("The name can't be empty.")
-                return
+            self.get_file_name_from_user()
 
         with open(os.path.join(self.DIR_PATH, self.name_file), "w") as file:
             json.dump(buffer, file, indent=4)
