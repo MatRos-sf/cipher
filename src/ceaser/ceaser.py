@@ -1,15 +1,18 @@
 import string
-from typing import List
+from typing import List, Optional, Dict
 
-ALPHA_UPPER = list(string.ascii_uppercase)
-DIGITS = list(string.digits)
+ALPHA_UPPER: List[str] = list(string.ascii_uppercase)
+DIGITS: List[str] = list(string.digits)
 LEN_DIGITS = len(DIGITS)
 LEN_ALPHA = len(ALPHA_UPPER)
 
 
 class CaesarCipher:
     def __init__(self, rot_types: List[int]):
-        self._rot_types = rot_types
+        if all(isinstance(i, int) for i in rot_types):
+            self._rot_types = rot_types
+        else:
+            self._rot_types = []
 
     @property
     def rot_types(self):
@@ -17,7 +20,7 @@ class CaesarCipher:
 
     @rot_types.setter
     def rot_types(self, value: int) -> None:
-        if value not in self.rot_types:
+        if value not in self.rot_types and isinstance(value, int):
             self._rot_types.append(value)
 
     @staticmethod
@@ -39,7 +42,7 @@ class CaesarCipher:
         new_letter = ALPHA_UPPER[new_index % LEN_ALPHA]
         return new_letter if letter.isupper() else new_letter.lower()
 
-    def code_encoder_decoder(self, text: str, rot_type: int, status: str) -> dict:
+    def code_encoder_decoder(self, text: str, rot_type: int, status: str) -> Dict[str, str]:
         """The method encode/ decode some text."""
         new_text: str = ""
         for letter in text:
