@@ -6,11 +6,12 @@ from ceaser import CaesarCipher
 from buffer import Buffer, Text
 from manager import FileHandler
 
+
 class Executor:
     def __init__(self) -> None:
-        self.caesar = CaesarCipher([13, 47])
-        self.buffer = Buffer()
-        self.file_handler = FileHandler()
+        self.caesar: CaesarCipher = CaesarCipher([13, 47])
+        self.buffer: Buffer = Buffer()
+        self.file_handler: FileHandler = FileHandler()
 
     def encrypt(self) -> Dict[str, str] | None:
         text_to_encrypt = input("Write text to encrypt\n> ")
@@ -69,8 +70,11 @@ class Executor:
         return
 
     def load_file(self) -> None:
-        name_file = input("Please, enter the file name:\n> ")
-        self.file_handler.name_file = name_file
+
+        self.file_handler._name_file = None
+
+        if not self.file_handler.get_file_name_from_user():
+            return
 
         content: List[Dict[str, str]] = self.file_handler.open()
 
@@ -80,14 +84,10 @@ class Executor:
 
     def save_to_file(self) -> None:
 
-        if not self.file_handler.name_file:
-            name_file = input("Please, enter the name of the file\n> ")
-            self.file_handler.name_file = name_file
-        else:
+        if self.file_handler.name_file:
             name_file = input(f"Do you want to append content to: {self.file_handler.name_file}?[yes/no]\n> ")
             if name_file.upper() == "NO":
-                name_file = input("Please, enter the name of the file\n> ")
-                self.file_handler.name_file = name_file
+                self.file_handler._name_file = None
 
         self.file_handler.save(self.buffer.convert_to_arr_of_dicts())
 
