@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Union
 import pyperclip
 
 from ceaser import CaesarCipher
@@ -115,7 +115,7 @@ class Menu:
         print("\nMenu: ")
         print(*menu, sep='\n')
 
-    def execute(self, choice: int):
+    def execute(self, choice: int) -> Union[None | Dict[str, str]]:
         exe = self.options.get(choice)
         if not exe:
             self.__show_error()
