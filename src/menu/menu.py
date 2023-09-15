@@ -111,11 +111,16 @@ class Menu:
         }
 
     def show(self) -> None:
+        """ The show displays menu."""
         menu = [f"{key}: {value[0]}" for key, value in self.options.items()]
         print("\nMenu: ")
         print(*menu, sep='\n')
 
     def execute(self, choice: int) -> Union[None | Dict[str, str]]:
+        """
+        The executor chooses what should be executed.
+        If the 'choice' does not exist, an error message will be displayed, and None will be returned.
+        """
         exe = self.options.get(choice)
         if not exe:
             self.__show_error()
@@ -123,11 +128,12 @@ class Menu:
         return exe[1]()
 
     def __show_error(self) -> None:
-        """ Function informs user about wrong choice."""
+        """ The method informs user about wrong choice."""
         print("This option doesn't exist.\n")
         return
 
     def is_exit(self, key: int) -> bool:
+        """The method checks, if the value of the key is equal to 'Exit'"""
         check_exit = self.options.get(key, None)
         return check_exit and check_exit[0] == 'Exit'
 
