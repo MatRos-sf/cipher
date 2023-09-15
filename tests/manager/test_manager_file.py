@@ -3,7 +3,6 @@ import pytest
 from unittest.mock import patch, call
 
 from src.manager import FileHandler
-import src.manager.manager_file
 
 
 @pytest.fixture
