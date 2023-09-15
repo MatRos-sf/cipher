@@ -55,12 +55,12 @@ class FileHandler:
 
     def save(self, buffer: List[Dict[str, str]]) -> None:
         """
-        The function save buffer to the file.
+        The method save buffer to the file.
         """
         if not self.name_file:
             if not self.get_file_name_from_user():
                 print("The file was not saved.")
-            return
+                return
 
         with open(os.path.join(self.DIR_PATH, self.name_file), "w") as file:
             json.dump(buffer, file, indent=4)
