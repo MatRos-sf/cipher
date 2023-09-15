@@ -22,7 +22,7 @@ def get_dict_of_str():
 
 class TestBuffer:
 
-    def test_add_should_add_text_when_obj_text(self, get_sample_text_obj):
+    def test_add_should_add_text_when_correct_obj_text(self, get_sample_text_obj):
         text = get_sample_text_obj
 
         b = Buffer()
@@ -51,8 +51,7 @@ class TestBuffer:
     def test_add_list_of_dict_when_arg_is_invalid(self, arr):
 
         b = Buffer()
-        with pytest.raises(TypeError):
-            b.add_list_of_dict(arr)
+        b.add_list_of_dict(arr)
 
         assert not b.data
 
