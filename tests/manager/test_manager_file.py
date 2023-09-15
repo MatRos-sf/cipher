@@ -2,9 +2,9 @@ import json
 import pytest
 from unittest.mock import patch, call
 
-
 from src.manager import FileHandler
 import src.manager.manager_file
+
 
 @pytest.fixture
 def get_sample_json_file():
@@ -59,14 +59,14 @@ class TestFileHandler:
         assert fh.name_file == "name_file.json"
         assert actual
 
-    # czemu printy mi wyświetla????
-    def test_get_file_name_from_user_invalid_input(self, mocker):
+    def test_get_file_name_from_user_invalid_input(self, mocker, capsys):
 
         mocker.patch("builtins.input", return_value="")
 
         fh = FileHandler()
         actual = fh.get_file_name_from_user()
 
+        capsys.readouterr()
         assert not actual
 
     def test_open_file_when_file_exist(self, mocker, tmp_path, get_sample_json_file):
@@ -100,7 +100,7 @@ class TestFileHandler:
 
         assert not actual
 
-    def test_open_file_when_file_does_not_exist_with_info(self, mocker, tmp_path):
+    def test_open_file_when_file_does_not_exist_with_info(self, mocker, tmp_path, capsys):
         d = tmp_path / "test"
         d.mkdir()
 
@@ -117,11 +117,11 @@ class TestFileHandler:
                 call("File doesn't exist!")
             ]
         )
+
+        capsys.readouterr()
         assert not actual
 
-    #test save
-
-    def test_save_when_buffer_is_set(self, mocker, tmp_path, get_sample_json_file):
+    def test_save_when_buffer_is_set(self, mocker, tmp_path, capsys, get_sample_json_file):
 
         fh = FileHandler()
         fh.name_file = "test.json"
@@ -133,10 +133,11 @@ class TestFileHandler:
         mocker.patch.object(FileHandler, "DIR_PATH", d)
 
         fh.save(buffer)
-
+        capsys.readouterr()
         assert len(list(tmp_path.iterdir())) == 1
 
-    def test_save_when_file_exist_then_overwrite_it(self, mocker, tmp_path, create_temp_directory, get_sample_json_file):
+    def test_save_when_file_exist_then_overwrite_it(self, mocker, tmp_path, capsys,
+                                                    create_temp_directory, get_sample_json_file):
 
         expect = json.dumps(get_sample_json_file, indent=4)
 
@@ -153,6 +154,7 @@ class TestFileHandler:
 
         fh.save(buffer)
 
+        capsys.readouterr()
         assert len(list(tmp_path.iterdir())) == 1
         assert old_file.read_text() == expect
 
