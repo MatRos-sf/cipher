@@ -29,13 +29,6 @@ class TestCaesarCipher:
         c = ceaser.CaesarCipher(base)
         assert c.rot_types == []
 
-    # def test_should_not_add_new_rot_type(self, mocker):
-    #     mock_caesar = mocker.patch("ceaser.ceaser.CaesarCipher")
-    #     mock_caesar_rot_types = mocker.patch("ceaser.ceaser.CaesarCipher._rot_types")
-    #     mock_caesar_rot_types.return_value = [1,2,3]
-    #
-    #     assert mock_caesar.rot_types == [1,2,3]
-
     def test_change_lower_letter_in_right(self):
         c = ceaser.CaesarCipher([1])
 
@@ -120,3 +113,17 @@ class TestCaesarCipher:
         assert response['rot_type'] == 'rot13'
         assert response['status'] == base_status
         assert isinstance(response, dict)
+
+    def test_encode_should_return_rot_47_new(self):
+        from string import ascii_uppercase
+
+        c = ceaser.CaesarCipher([13])
+
+        base = ascii_uppercase
+        base_status = 'test_enc'
+        exp = 'nopqrstuvwxyzabcdefghijklm'.upper()
+        response = c.code_encoder_decoder(base, 13, base_status)
+
+        assert response['text'] == exp
+        assert response['rot_type'] == 'rot13'
+        assert response['status'] == base_status
