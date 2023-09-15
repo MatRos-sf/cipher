@@ -5,8 +5,8 @@ from menu.menu import Menu
 
 class Cipher:
     def __init__(self):
-        self.menu = Menu()
-        self._run = True
+        self.menu: Menu = Menu()
+        self._run: bool = True
 
     def run(self) -> None:
         """Main method who run whole app."""
@@ -14,6 +14,7 @@ class Cipher:
         while self._run:
             self.menu.show()
             response, result = self.response()
+
             if response:
                 if not result and self.menu.is_exit(response):
                     self._run = False
