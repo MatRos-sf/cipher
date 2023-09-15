@@ -14,8 +14,10 @@ class Buffer:
 
     def add_list_of_dict(self, arr: List[Dict[str, str]]) -> None:
         for text in arr:
-            self.add(Text(**text))
-
+            try:
+                self.add(Text(**text))
+            except TypeError:
+                pass
     def convert_to_arr_of_dicts(self) -> List[Dict[str, str]]:
         """ Function convert Buffer to dict """
         return [text.__dict__ for text in self.data]
