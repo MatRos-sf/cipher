@@ -80,3 +80,6 @@ class TestCipher:
 
         calls = mock.call_count
         assert calls == 2
+
+    def test_bandit(self):
+        pass

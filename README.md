@@ -1,4 +1,4 @@
-# Cipher Project 
+# Cipher Project
 
 ## Content of project
 * [General info](#general-info)
@@ -8,12 +8,14 @@
 
 ## General info
 
-<b>Cipher project</b> was created to allow the user to encode/decode text based on the 
-Caesar cipher with rot13/rot47 (more information: [https://pl.wikipedia.org/wiki/Szyfr_Cezara](https://pl.wikipedia.org/wiki/Szyfr_Cezara)). 
+<b>Cipher project</b> was created to allow the user to encode/decode text based on the
+Caesar cipher with rot13/rot47 (more information: [https://pl.wikipedia.org/wiki/Szyfr_Cezara](https://pl.wikipedia.org/wiki/Szyfr_Cezara)).
 
-## Technologies
+## Technologies and tools
 <ul>
 <li>Python 3.10</li>
+<li>Pytest</li>
+<li>Pre-commit</li>
 </ul>
 
 ## Setup
@@ -37,11 +39,11 @@ python src/main.py
 
 ## More detailed information about modules
 
-The project consists of 2 files: ```src``` and ```tests```. <b>The tests</b> file has all module tests. 
-<b>The src</b> file, on the other hand, contains all the modules that were used for the program to function. 
+The project consists of 2 files: ```src``` and ```tests```. <b>The tests</b> file has all module tests.
+<b>The src</b> file, on the other hand, contains all the modules that were used for the program to function.
 Let's see what the src file consists of:
 #### src/buffer
-The buffer consists of 2 files: <b>buffer.py</b> and <b>text.py</b>. 
+The buffer consists of 2 files: <b>buffer.py</b> and <b>text.py</b>.
 In these files there are two important classes: ```Text``` it's a container of datum and ```Buffer``` which stores all ```Text``` objects.
 #### src/ceaser
 In this directory, there is a <b>Caesar</b> class that allows for both encryption and decryption code.
@@ -52,7 +54,7 @@ This directory contains all the saved files.
 #### src/manager
 This directory contains the <b>FileHandler</b> class, which is responsible for saving and reading files.
 #### src/menu
-This directory contains two important classes: <b>Executor</b> and <b>Menu</b>. The <b>Executor</b> is responsible for 
+This directory contains two important classes: <b>Executor</b> and <b>Menu</b>. The <b>Executor</b> is responsible for
 running specific tasks, while the <b>Menu</b> allows for displaying available options that are executed through the <b>Executor</b> class.
 #### src/main.py
 It's the main script. If you run it, you will execute the program.
