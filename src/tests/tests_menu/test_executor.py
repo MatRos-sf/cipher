@@ -4,11 +4,14 @@ import sys
 import json
 from string import ascii_lowercase, ascii_uppercase
 
-from src.menu.menu import Executor
+from menu.menu import Executor
 from buffer import Text
 from manager import FileHandler
-from tests.manager.test_manager_file import get_sample_json_file, create_temp_directory
-from tests.buffer.test_buffer import get_sample_text_obj
+from tests.tests_manager.test_manager_file import (
+    get_sample_json_file,
+    create_temp_directory,
+)
+from tests.tests_buffer.test_buffer import get_sample_text_obj
 
 
 @pytest.fixture
@@ -241,7 +244,7 @@ class TestExecutor:
         expected = Text(decrypt_text, f"rot{str(input_chose_type)}", "decrypted")
 
         mock_print = Mock()
-        mocker.patch("src.menu.menu.Buffer.add", return_value="")
+        mocker.patch("menu.menu.Buffer.add", return_value="")
 
         with patch(
             "builtins.input", side_effect=[input_text_to_encrypt, input_chose_type]
@@ -286,9 +289,7 @@ class TestExecutor:
         executor = Executor()
 
         mocker.patch("builtins.input", return_value="test")
-        mocker.patch(
-            "src.menu.menu.FileHandler.open", return_value=get_sample_json_file
-        )
+        mocker.patch("menu.menu.FileHandler.open", return_value=get_sample_json_file)
 
         executor.load_file()
 
@@ -301,7 +302,7 @@ class TestExecutor:
         executor = Executor()
 
         mocker.patch("builtins.input", return_value="test")
-        mocker.patch("src.menu.menu.FileHandler.open", return_value=load_data)
+        mocker.patch("menu.menu.FileHandler.open", return_value=load_data)
 
         executor.load_file()
 
@@ -313,9 +314,7 @@ class TestExecutor:
         executor = Executor()
 
         mocker.patch("builtins.input", return_value="test")
-        mocker.patch(
-            "src.menu.menu.FileHandler.open", return_value=get_sample_json_file
-        )
+        mocker.patch("menu.menu.FileHandler.open", return_value=get_sample_json_file)
         with patch("builtins.print") as mock:
             executor.load_file()
 
@@ -337,9 +336,7 @@ class TestExecutor:
         executor.file_handler.name_file = "test.json"
         expected = get_sample_json_file
 
-        mocker.patch(
-            "src.menu.menu.Buffer.convert_to_arr_of_dicts", return_value=expected
-        )
+        mocker.patch("menu.menu.Buffer.convert_to_arr_of_dicts", return_value=expected)
         mocker.patch.object(FileHandler, "DIR_PATH", create_temp_directory)
         mocker.patch("builtins.input", return_value=answer_user)
 
@@ -363,9 +360,7 @@ class TestExecutor:
         d = tmp_path / "test"
         d.mkdir()
 
-        mocker.patch(
-            "src.menu.menu.Buffer.convert_to_arr_of_dicts", return_value=expected
-        )
+        mocker.patch("menu.menu.Buffer.convert_to_arr_of_dicts", return_value=expected)
         mocker.patch.object(FileHandler, "DIR_PATH", d)
 
         with patch("builtins.input", side_effect=[answer_user, "new_test.json"]):
@@ -389,7 +384,7 @@ class TestExecutor:
     def test_print_buffer_when_buffer_is_then_call_mock_info(
         self, mocker, get_sample_text_obj
     ):
-        mocker.patch("src.menu.menu.Buffer.print_buffer")
+        mocker.patch("menu.menu.Buffer.print_buffer")
 
         executor = Executor()
         executor.buffer.data = [get_sample_text_obj]

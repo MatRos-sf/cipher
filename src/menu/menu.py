@@ -16,7 +16,7 @@ class Executor:
     def encrypt(self) -> Dict[str, str] | None:
         text_to_encrypt = input("Write text to encrypt\n> ")
         print("Which type do you want to use? ")
-        print(*self.caesar.rot_types, sep='\n')
+        print(*self.caesar.rot_types, sep="\n")
 
         try:
             chose_type = int(input("> "))
@@ -28,7 +28,9 @@ class Executor:
             print("I'm sorry this type is unavailable.\n")
             return
 
-        encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, chose_type, 'encrypted')
+        encrypt_text = self.caesar.code_encoder_decoder(
+            text_to_encrypt, chose_type, "encrypted"
+        )
 
         text = Text(**encrypt_text)
         self.buffer.add(text)
@@ -40,7 +42,7 @@ class Executor:
     def decrypt(self) -> Dict[str, str] | None:
         text_to_encrypt = input("Write text to decrypt\n> ")
         print("Which type do you want to use? ")
-        print(*self.caesar.rot_types, sep='\n')
+        print(*self.caesar.rot_types, sep="\n")
 
         try:
             chose_type = int(input("> "))
@@ -52,16 +54,18 @@ class Executor:
             print("I'm sorry this type is unavailable.")
             return
 
-        encrypt_text = self.caesar.code_encoder_decoder(text_to_encrypt, -chose_type, 'decrypted')
+        encrypt_text = self.caesar.code_encoder_decoder(
+            text_to_encrypt, -chose_type, "decrypted"
+        )
 
         text = Text(**encrypt_text)
         self.buffer.add(text)
-        print(text, '\n')
+        print(text, "\n")
 
         return encrypt_text
 
     def check_changes(self) -> bool:
-        """Function checks changes in read file and buffer"""
+        """Function checks changes in read file and tests_buffer"""
         return self.buffer.convert_to_arr_of_dicts() == self.file_handler.content
 
     def exit(self) -> None:
@@ -70,7 +74,6 @@ class Executor:
         return
 
     def load_file(self) -> None:
-
         self.file_handler._name_file = None
 
         if not self.file_handler.get_file_name_from_user():
@@ -80,12 +83,13 @@ class Executor:
 
         if content:
             self.buffer.add_list_of_dict(content)
-            print("Loaded:", *content, sep='\n')
+            print("Loaded:", *content, sep="\n")
 
     def save_to_file(self) -> None:
-
         if self.file_handler.name_file:
-            name_file = input(f"Do you want to append content to: {self.file_handler.name_file}?[yes/no]\n> ")
+            name_file = input(
+                f"Do you want to append content to: {self.file_handler.name_file}?[yes/no]\n> "
+            )
             if name_file.upper() == "NO":
                 self.file_handler._name_file = None
 
@@ -107,14 +111,14 @@ class Menu:
             3: ("Load file", partial(self.executor.load_file)),
             4: ("Save", partial(self.executor.save_to_file)),
             5: ("History", partial(self.executor.print_buffer)),
-            6: ("Exit", partial(self.executor.exit))
+            6: ("Exit", partial(self.executor.exit)),
         }
 
     def show(self) -> None:
-        """ The show displays menu."""
+        """The show displays tests_menu."""
         menu = [f"{key}: {value[0]}" for key, value in self.options.items()]
         print("\nMenu: ")
-        print(*menu, sep='\n')
+        print(*menu, sep="\n")
 
     def execute(self, choice: int) -> Union[None | Dict[str, str]]:
         """
@@ -128,12 +132,11 @@ class Menu:
         return exe[1]()
 
     def __show_error(self) -> None:
-        """ The method informs user about wrong choice."""
+        """The method informs user about wrong choice."""
         print("This option doesn't exist.\n")
         return
 
     def is_exit(self, key: int) -> bool:
         """The method checks, if the value of the key is equal to 'Exit'"""
         check_exit = self.options.get(key, None)
-        return check_exit and check_exit[0] == 'Exit'
-
+        return check_exit and check_exit[0] == "Exit"

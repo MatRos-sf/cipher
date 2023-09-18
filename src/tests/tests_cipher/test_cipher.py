@@ -1,12 +1,12 @@
 import pytest
 from unittest.mock import patch
 
-from src.cipher.cipher import Cipher
+from cipher.cipher import Cipher
 
 
 @pytest.fixture
 def mock_executor_without_exit(mocker):
-    mocker.patch("src.cipher.cipher.Menu.execute", return_value={"t": "test"})
+    mocker.patch("cipher.cipher.Menu.execute", return_value={"t": "test"})
 
 
 class TestCipher:
@@ -34,7 +34,7 @@ class TestCipher:
     def test_some_when_user_response_is_1_or_2_then_should_execute_func(
         self, value, mocker
     ):
-        mocker.patch("src.cipher.cipher.Menu.execute", return_value={"t": "test"})
+        mocker.patch("cipher.cipher.Menu.execute", return_value={"t": "test"})
         mocker.patch("builtins.input", return_value=value)
 
         cipher = Cipher()
@@ -48,7 +48,7 @@ class TestCipher:
     def test_some_when_user_response_is_from_3_to_6_then_should_execute_and_return_int_and_none(
         self, value, mocker
     ):
-        mocker.patch("src.cipher.cipher.Menu.execute", return_value=None)
+        mocker.patch("cipher.cipher.Menu.execute", return_value=None)
         mocker.patch("builtins.input", return_value=value)
 
         cipher = Cipher()
@@ -59,8 +59,8 @@ class TestCipher:
         assert not actual[1]
 
     def test_run_when_user_type_exit(self, mocker, capsys):
-        mocker.patch("src.cipher.cipher.Cipher.response", return_value=(True, False))
-        mocker.patch("src.cipher.cipher.Menu.is_exit", return_value=True)
+        mocker.patch("cipher.cipher.Cipher.response", return_value=(True, False))
+        mocker.patch("cipher.cipher.Menu.is_exit", return_value=True)
 
         cipher = Cipher()
         cipher.run()
@@ -70,9 +70,9 @@ class TestCipher:
         assert not cipher._run
 
     def test_run_when_user_type_exit_should_call_info(self, mocker, capsys):
-        mocker.patch("src.cipher.cipher.Cipher.response", return_value=(True, False))
-        mocker.patch("src.cipher.cipher.Menu.is_exit", return_value=True)
-        mocker.patch("src.cipher.cipher.Menu.show", return_value=None)
+        mocker.patch("cipher.cipher.Cipher.response", return_value=(True, False))
+        mocker.patch("cipher.cipher.Menu.is_exit", return_value=True)
+        mocker.patch("cipher.cipher.Menu.show", return_value=None)
 
         with patch("builtins.print") as mock:
             cipher = Cipher()

@@ -1,5 +1,5 @@
-from src.buffer.buffer import Buffer
-from src.buffer.text import Text
+from buffer.buffer import Buffer
+from buffer.text import Text
 
 import pytest
 from unittest.mock import patch, call

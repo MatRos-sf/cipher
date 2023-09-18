@@ -18,10 +18,9 @@ class FileHandler:
     def name_file(self, value: str):
         value = value.rstrip()
         if value:
-            self._name_file = f"{value}.json" if not value.endswith('.json') else value
+            self._name_file = f"{value}.json" if not value.endswith(".json") else value
 
     def get_file_name_from_user(self) -> bool:
-
         i = 0
         while not self.name_file:
             name_file = input("Type the file name and press enter.\n>")
@@ -55,7 +54,7 @@ class FileHandler:
 
     def save(self, buffer: List[Dict[str, str]]) -> None:
         """
-        The method save buffer to the file.
+        The method save tests_buffer to the file.
         """
         if not self.name_file:
             if not self.get_file_name_from_user():

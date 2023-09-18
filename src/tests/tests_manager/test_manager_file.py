@@ -2,25 +2,18 @@ import json
 import pytest
 from unittest.mock import patch, call
 
-from src.manager import FileHandler
+from manager import FileHandler
 
 
 @pytest.fixture
 def get_sample_json_file():
     json_file = [
-            {
-            "text": "Vgv hv fjov",
-            "rot_type": "rot47",
-            "status": "encrypted"
-        },
-        {
-            "text": "Nyn zn xbgn5",
-            "rot_type": "rot13",
-            "status": "encrypted"
-        }
+        {"text": "Vgv hv fjov", "rot_type": "rot47", "status": "encrypted"},
+        {"text": "Nyn zn xbgn5", "rot_type": "rot13", "status": "encrypted"},
     ]
 
     return json_file
+
 
 @pytest.fixture
 def create_temp_directory(tmp_path):
@@ -31,26 +24,31 @@ def create_temp_directory(tmp_path):
 
 
 class TestFileHandler:
-
     @pytest.mark.parametrize("file_name", [(""), ("  "), ("    ")])
     def test_property_when_namefile_is_empty_expect_namefile_empty(self, file_name):
-
         file_handler = FileHandler()
         file_handler.name_file = file_name
 
         assert not file_handler.name_file
 
-    @pytest.mark.parametrize("file_name, expected", [("test", "test.json"), (" test ", "test.json"), ("    test.json", "test.json")])
-    def test_property_when_set_namefile_expect_namefile_should_be_set(self, file_name, expected):
-
+    @pytest.mark.parametrize(
+        "file_name, expected",
+        [
+            ("test", "test.json"),
+            (" test ", "test.json"),
+            ("    test.json", "test.json"),
+        ],
+    )
+    def test_property_when_set_namefile_expect_namefile_should_be_set(
+        self, file_name, expected
+    ):
         file_handler = FileHandler()
         file_handler.name_file = file_name
 
         assert file_handler.name_file
 
     def test_get_file_name_from_user_valid_input(self, mocker):
-
-        mocker.patch("src.manager.manager_file.input", return_value="name_file")
+        mocker.patch("manager.manager_file.input", return_value="name_file")
 
         fh = FileHandler()
         actual = fh.get_file_name_from_user()
@@ -59,7 +57,6 @@ class TestFileHandler:
         assert actual
 
     def test_get_file_name_from_user_invalid_input(self, mocker, capsys):
-
         mocker.patch("builtins.input", return_value="")
 
         fh = FileHandler()
@@ -78,7 +75,7 @@ class TestFileHandler:
         p.write_text(expect)
 
         fh = FileHandler()
-        fh.name_file = 'test.json'
+        fh.name_file = "test.json"
 
         mocker.patch.object(FileHandler, "DIR_PATH", d)
 
@@ -99,7 +96,9 @@ class TestFileHandler:
 
         assert not actual
 
-    def test_open_file_when_file_does_not_exist_with_info(self, mocker, tmp_path, capsys):
+    def test_open_file_when_file_does_not_exist_with_info(
+        self, mocker, tmp_path, capsys
+    ):
         d = tmp_path / "test"
         d.mkdir()
 
@@ -111,17 +110,14 @@ class TestFileHandler:
         with patch("builtins.print") as mock:
             actual = fh.open()
 
-        mock.assert_has_calls(
-            [
-                call("File doesn't exist!")
-            ]
-        )
+        mock.assert_has_calls([call("File doesn't exist!")])
 
         capsys.readouterr()
         assert not actual
 
-    def test_save_when_buffer_is_set(self, mocker, tmp_path, capsys, get_sample_json_file):
-
+    def test_save_when_buffer_is_set(
+        self, mocker, tmp_path, capsys, get_sample_json_file
+    ):
         fh = FileHandler()
         fh.name_file = "test.json"
         buffer = get_sample_json_file
@@ -135,9 +131,9 @@ class TestFileHandler:
         capsys.readouterr()
         assert len(list(tmp_path.iterdir())) == 1
 
-    def test_save_when_file_exist_then_overwrite_it(self, mocker, tmp_path, capsys,
-                                                    create_temp_directory, get_sample_json_file):
-
+    def test_save_when_file_exist_then_overwrite_it(
+        self, mocker, tmp_path, capsys, create_temp_directory, get_sample_json_file
+    ):
         expect = json.dumps(get_sample_json_file, indent=4)
 
         fh = FileHandler()
@@ -147,7 +143,7 @@ class TestFileHandler:
         d = create_temp_directory
         old_file = d / "test.json"
 
-        old_file.write_text('Test old file.')
+        old_file.write_text("Test old file.")
 
         mocker.patch.object(FileHandler, "DIR_PATH", create_temp_directory)
 
@@ -158,19 +154,15 @@ class TestFileHandler:
         assert old_file.read_text() == expect
 
     def test_save_when_buffer_is_set_then_call_info(
-            self, mocker, tmp_path, get_sample_json_file, create_temp_directory):
-
+        self, mocker, tmp_path, get_sample_json_file, create_temp_directory
+    ):
         fh = FileHandler()
         fh.name_file = "test.json"
         buffer = get_sample_json_file
 
         mocker.patch.object(FileHandler, "DIR_PATH", create_temp_directory)
 
-        with patch('builtins.print') as mock:
+        with patch("builtins.print") as mock:
             fh.save(buffer)
 
-        mock.assert_has_calls(
-            [
-                call("Saved. \n")
-            ]
-        )
+        mock.assert_has_calls([call("Saved. \n")])

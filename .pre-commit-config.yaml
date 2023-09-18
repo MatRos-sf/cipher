@@ -13,4 +13,7 @@ repos:
     rev: 1.7.5
     hooks:
     -   id: bandit
-        args: [--skip, "B101"]
+        exclude: ^tests/
+        args:
+            - -s
+            - B101,B311

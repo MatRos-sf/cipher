@@ -3,7 +3,7 @@ from unittest.mock import patch, call
 from random import randint
 
 
-from src.menu.menu import Menu
+from menu.menu import Menu
 
 
 class TestMenu:
@@ -32,7 +32,7 @@ class TestMenu:
         def empty_fun():
             return True
 
-        mocker.patch("src.menu.menu.partial", return_value=empty_fun)
+        mocker.patch("menu.menu.partial", return_value=empty_fun)
 
         menu = Menu()
         expected = menu.execute(option)
@@ -44,7 +44,7 @@ class TestMenu:
         def empty_fun():
             return True
 
-        mocker.patch("src.menu.menu.partial", return_value=empty_fun)
+        mocker.patch("menu.menu.partial", return_value=empty_fun)
 
         menu = Menu()
         expected = menu.execute(option)
@@ -57,7 +57,7 @@ class TestMenu:
         def empty_fun():
             return True
 
-        mocker.patch("src.menu.menu.partial", return_value=empty_fun)
+        mocker.patch("menu.menu.partial", return_value=empty_fun)
 
         menu = Menu()
         expected = menu.execute(option)
@@ -72,7 +72,7 @@ class TestMenu:
         def empty_fun():
             return True
 
-        mocker.patch("src.menu.menu.partial", return_value=empty_fun)
+        mocker.patch("menu.menu.partial", return_value=empty_fun)
 
         with patch("builtins.print") as mock:
             menu = Menu()
@@ -87,7 +87,7 @@ class TestMenu:
         def empty_fun():
             return True
 
-        mocker.patch("src.menu.menu.partial", return_value=empty_fun)
+        mocker.patch("menu.menu.partial", return_value=empty_fun)
 
         with patch("builtins.print") as mock:
             menu = Menu()

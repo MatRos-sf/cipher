@@ -25,8 +25,10 @@ class CaesarCipher:
 
     @staticmethod
     def change_letter(letter: str, num_rot: int, is_digit: bool = False) -> str:
-        """The method change letter according to Caesar cipher rule."""
-        index = ALPHA_UPPER.index(letter.upper()) if not is_digit else DIGITS.index(letter)
+        """The method change letter according to Caesar tests_cipher rule."""
+        index = (
+            ALPHA_UPPER.index(letter.upper()) if not is_digit else DIGITS.index(letter)
+        )
         new_index = index + num_rot
 
         if not is_digit and 0 < new_index < LEN_ALPHA:
@@ -37,12 +39,14 @@ class CaesarCipher:
             return DIGITS[new_index]
 
         elif is_digit:
-            return DIGITS[new_index % LEN_DIGITS ]
+            return DIGITS[new_index % LEN_DIGITS]
 
         new_letter = ALPHA_UPPER[new_index % LEN_ALPHA]
         return new_letter if letter.isupper() else new_letter.lower()
 
-    def code_encoder_decoder(self, text: str, rot_type: int, status: str) -> Dict[str, str]:
+    def code_encoder_decoder(
+        self, text: str, rot_type: int, status: str
+    ) -> Dict[str, str]:
         """The method encode/ decode some text."""
         new_text: str = ""
         for letter in text:
@@ -57,7 +61,8 @@ class CaesarCipher:
 
         data = {
             "text": new_text,
-            "rot_type": "rot" + (str(-rot_type) if status == 'decrypted' else str(rot_type)),
-            "status": status
+            "rot_type": "rot"
+            + (str(-rot_type) if status == "decrypted" else str(rot_type)),
+            "status": status,
         }
         return data
