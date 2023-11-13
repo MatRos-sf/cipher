@@ -1,14 +1,14 @@
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 import json
 import os
 
 
 class FileHandler:
-    DIR_PATH = "files"
+    DIR_PATH: str = "files"
 
     def __init__(self):
         self._name_file: Optional[str] = None
-        self.content = None
+        self.content: Optional[Dict[str, str]] = None
 
     @property
     def name_file(self):
@@ -16,29 +16,51 @@ class FileHandler:
 
     @name_file.setter
     def name_file(self, value: str):
-        if value.rstrip():
-            self._name_file = f"{value}.json" if not value.endswith('.json') else value
+        value = value.rstrip()
+        if value:
+            self._name_file = f"{value}.json" if not value.endswith(".json") else value
 
-    def open(self):
-        if not self.name_file:
-            name_file = input("Please, write the name file\n>")
+    def get_file_name_from_user(self) -> bool:
+        i = 0
+        while not self.name_file:
+            name_file = input("Type the file name and press enter.\n>")
             self.name_file = name_file
 
+            if not self.name_file:
+                print("The file name can't be empty!")
+                if i == 4:
+                    print("Too many attempts!")
+                    return False
+            i += 1
+        return True
+
+    def open(self) -> Union[List[Dict[str, str]], None]:
+        """
+        The function opens file. Return:
+            None - the file doesn't exist
+            List of dicts
+        """
+        if not self.name_file:
+            if not self.get_file_name_from_user():
+                print("The file was not opened.")
+                return
         try:
-            file = open(os.path.join(FileHandler.DIR_PATH, self.name_file))
+            with open(os.path.join(FileHandler.DIR_PATH, self.name_file)) as file:
+                content = json.load(file)
         except FileNotFoundError:
             print("File doesn't exist!")
-        else:
-            self.content = json.load(file)
-            file.close()
-            return self.content
+            return
+        return content
 
-    def save(self, buffer: List[Dict[str, str]]):
-
+    def save(self, buffer: List[Dict[str, str]]) -> None:
+        """
+        The method save tests_buffer to the file.
+        """
         if not self.name_file:
-            name_file = input("Please write name file to save\n>")
-            self.name_file = name_file
+            if not self.get_file_name_from_user():
+                print("The file was not saved.")
+                return
 
         with open(os.path.join(self.DIR_PATH, self.name_file), "w") as file:
             json.dump(buffer, file, indent=4)
-
+        print("Saved. \n")
