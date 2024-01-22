@@ -22,7 +22,7 @@ Caesar cipher with rot13/rot47 (more information: [https://pl.wikipedia.org/wiki
 
 Clone the repo:
 ```shell
-git clone [...](https://github.com/MatRos-sf/cipher)
+git clone https://github.com/MatRos-sf/cipher
 ```
 Create environment:
 ```shell
